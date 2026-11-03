@@ -1,0 +1,45 @@
+# ---------- 构建产物 ----------
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Pp]ublish/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---------- IDE ----------
+.idea/
+.vs/
+.vscode/
+*.swp
+*.DS_Store
+
+# ---------- NuGet ----------
+*.nupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+project.lock.json
+
+# ---------- 日志 ----------
+[Ll]og/
+[Ll]ogs/
+
+# ---------- 本地数据库（SQLite 等） ----------
+*.db
+*.db-shm
+*.db-wal
+
+# ---------- 测试与覆盖率 ----------
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+
+# ---------- 本地敏感配置 ----------
+appsettings.*.local.json
+secrets.json
+
+# ---------- 操作系统 ----------
+Thumbs.db
+desktop.ini

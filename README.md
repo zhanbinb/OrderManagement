@@ -2,6 +2,7 @@
 
 基于 ASP.NET Core 的订单管理 Web API 示例项目，涵盖分层结构、EF Core 数据访问、依赖注入生命周期、Options 配置模式、全局异常处理与 Serilog 结构化日志等常用实践。
 
+
 ## 技术栈
 
 | 组件 | 说明 |

@@ -17,4 +17,13 @@ public partial class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<Order> Orders { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    
+        modelBuilder.Entity<Order>()
+            .HasIndex(x => x.OrderNo)
+            .IsUnique();
+    }
 }

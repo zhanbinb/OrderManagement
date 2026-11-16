@@ -52,6 +52,9 @@ namespace OrderManagement.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderNo")
+                        .IsUnique();
+
                     b.ToTable("Orders");
                 });
 #pragma warning restore 612, 618

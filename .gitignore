@@ -43,3 +43,6 @@ secrets.json
 # ---------- 操作系统 ----------
 Thumbs.db
 desktop.ini
+
+.env
+*-backup.sql

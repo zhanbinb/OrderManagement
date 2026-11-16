@@ -7,12 +7,12 @@ namespace OrderManagement.Api.Services.Orders;
 
 public class OrderService : IOrderService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IOrderRepository _repository;
     private readonly ILogger<OrderService> _logger;
 
-    public OrderService(ApplicationDbContext context, ILogger<OrderService> logger)
+    public OrderService(IOrderRepository repository, ILogger<OrderService> logger)
     {
-        _context = context;
+        _repository = repository;
         _logger = logger;
     }
 
@@ -21,13 +21,12 @@ public class OrderService : IOrderService
         _logger.LogInformation("开始创建订单，订单编号：{OrderNo}", request.OrderNo);
         var order = new Order
         {
-            OrderNo = request.OrderNo,
             CustomerName = request.CustomerName,
+            OrderNo = request.OrderNo,
             TotalAmount = request.TotalAmount,
             Status = OrderStatus.Pending,
         };
-        _context.Orders.Add(order);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(order);
         _logger.LogInformation("订单创建成功，订单编号：{OrderNo}", order.OrderNo);
         return order;
     }

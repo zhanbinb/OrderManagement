@@ -52,6 +52,7 @@ builder.Services.AddScoped<IScopedOperationService, OperationService>();
 builder.Services.AddSingleton<ISingletonOperationService, OperationService>();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //注册订单配置
 builder.Services.Configure<OrderSettings>(builder.Configuration.GetSection("OrderSettings"));

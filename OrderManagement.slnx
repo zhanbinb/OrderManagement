@@ -5,4 +5,7 @@
   <Folder Name="/src/">
     <Project Path="src/OrderManagement.Api/OrderManagement.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderManagement.Tests/OrderManagement.Tests.csproj" />
+  </Folder>
 </Solution>

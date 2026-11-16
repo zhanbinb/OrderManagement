@@ -88,6 +88,11 @@ builder.Services.AddStackExchangeRedisCache(options =>
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    
+    // 测试环境放宽限制，生产环境保持每分钟 5 次
+    var permitLimit = builder.Environment.IsEnvironment("Testing")
+        ? 1000
+        : 5;
 
     options.AddPolicy("order-api", httpcontext =>
     {
@@ -95,7 +100,7 @@ builder.Services.AddRateLimiter(options =>
         return RateLimitPartition.GetFixedWindowLimiter(partitionKey: ipAddress, factory =>
             new FixedWindowRateLimiterOptions
             {
-                PermitLimit = 5,
+                PermitLimit = permitLimit,
                 Window = TimeSpan.FromMinutes(1),
                 QueueLimit = 0,
                 AutoReplenishment = true
@@ -282,3 +287,6 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 });
 
 app.Run();
+
+
+public partial class Program { }

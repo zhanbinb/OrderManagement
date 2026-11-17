@@ -25,5 +25,9 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Order>()
             .HasIndex(x => x.OrderNo)
             .IsUnique();
+        
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Version)
+            .IsRowVersion();
     }
 }

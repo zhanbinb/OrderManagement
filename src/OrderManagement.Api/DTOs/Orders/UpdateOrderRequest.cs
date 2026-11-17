@@ -10,7 +10,7 @@ public class UpdateOrderRequest
 
     [Range(0.01, 999999999, ErrorMessage = "订单金额必须大于0")]
     public decimal TotalAmount { get; set; }
-
-    [StringLength(500, ErrorMessage = "备注不能超过500个字符")]
-    public string? Remark { get; set; }
+    
+    [Required]
+    public uint? Version { get; set; }
 }

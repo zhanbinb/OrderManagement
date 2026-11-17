@@ -1,5 +1,3 @@
-using OrderManagement.Api.DTOs.Orders;
-
 namespace OrderManagement.Api.DTOs.Orders;
 
 public class OrderListResponse

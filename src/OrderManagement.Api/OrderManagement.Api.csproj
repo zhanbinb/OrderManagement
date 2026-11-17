@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>d9cbfc78-41be-4496-b58a-737ca32ce823</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
   </PropertyGroup>
 
   <ItemGroup>

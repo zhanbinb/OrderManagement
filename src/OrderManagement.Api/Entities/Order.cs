@@ -20,5 +20,5 @@ public class Order
 
     public DateTime? UpdatedAt { get; set; }
     
-
+    public uint Version { get; set; }
 }

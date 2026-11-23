@@ -58,8 +58,26 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+        
+  # rabbitmq
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: order-rabbitmq
+    hostname: order-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: RabbitMQ@123456
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
 
 volumes:
   postgres_data:
     external: true
     name: 00d33d2133f6360d6c95c933cd4ea8000b809df36671590c2c4d975323a686ef
+  rabbitmq_data:
+
+

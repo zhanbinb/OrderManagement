@@ -18,6 +18,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
     
+    public DbSet<ProcessedMessage> ProcessedMessages => Set<ProcessedMessage>();
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -29,5 +31,13 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Order>()
             .Property(o => o.Version)
             .IsRowVersion();
+        
+        modelBuilder.Entity<ProcessedMessage>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+
+            entity.HasIndex(x => x.MessageId)
+                .IsUnique();
+        });
     }
 }

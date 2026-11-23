@@ -1,5 +1,45 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=JetBrains Rider
+### 消息推送
+POST http://localhost:5019/api/Message/publish
+Content-Type: application/json
+###
 
+### DDD 创建订单
+POST http://localhost:5019/api/ddd/orders
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 1001,
+      "productName": "机械键盘",
+      "unitPrice": 299.00,
+      "currency": "CNY",
+      "quantity": 2
+    },
+    {
+      "productId": 1002,
+      "productName": "鼠标",
+      "unitPrice": 99.00,
+      "currency": "CNY",
+      "quantity": 1
+    }
+  ]
+}
+### DDD 获取订单详情
+GET http://localhost:5019/api/ddd/orders/2
+Accept: application/json
+###
+
+### DDD 更新订单商品数量
+PUT http://localhost:5019/api/ddd/orders/2/items/20988857-5eaa-475e-872e-d0fec7a93707/quantity
+Content-Type: application/json
+
+{
+  "quantity": 3
+}
+###
+
+### DDD 取消订单
+POST http://localhost:5019/api/ddd/orders/2/cancel
+Content-Type: application/json
 ###

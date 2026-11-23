@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using OrderManagement.Api.DTOs.Orders;
+using OrderManagement.Api.Filters;
 using OrderManagement.Api.Services.Orders;
 
 namespace OrderManagement.Api.Controllers;
 
+[ServiceFilter(typeof(ActionLogFilter))]
 [EnableRateLimiting("order-api")]
 [ApiController]
 [Route("api/[controller]")]
@@ -42,7 +44,7 @@ public class OrdersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(order);
+       return Ok(order);
     }
 
     [HttpGet]
@@ -62,7 +64,11 @@ public class OrdersController : ControllerBase
 
         // 2. 查询并组装分页结果
         var response = await _orderService.GetListAsync(pageIndex, pageSize);
-
+        _logger.LogInformation(
+            "订单列表查询成功，pageIndex={PageIndex}, pageSize={PageSize}, totalCount={TotalCount}",
+            pageIndex,
+            pageSize,
+            response.TotalCount);
         return Ok(response);
     }
 

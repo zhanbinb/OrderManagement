@@ -7,17 +7,39 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
 using OrderManagement.Api.Data;
-using OrderManagement.Api.Exceptions;
+
+using OrderManagement.Api.Filters;
 using OrderManagement.Api.HealthChecks;
+using OrderManagement.Api.Messaging;
+using OrderManagement.Api.Messaging.Consumers;
+using OrderManagement.Api.Middleware;
+using OrderManagement.Api.Middlewares;
 using OrderManagement.Api.Services;
 using OrderManagement.Api.Services.Orders;
 using OrderManagement.Api.Settings;
+using OrderManagement.Application.Services;
+using OrderManagement.Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var environment = builder.Environment.EnvironmentName;
 Console.WriteLine($"当前环境: {environment}");
+
+
+
+// DDD 数据库上下文
+builder.Services.AddDbContext<OrderManagementDbContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DddConnection"));
+});
+
+// 注册 DDD Repository
+builder.Services.AddScoped<OrderManagement.Domain.Repositories.IOrderRepository, OrderManagement.Infrastructure.Repositories.OrderRepository>();
+
+
+
 
 // Serilog 日志配置
 builder.Host.UseSerilog((context, configuration) =>
@@ -239,6 +261,25 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
+builder.Services.AddScoped<ActionLogFilter>();
+
+
+//注册RabbitMQ配置
+builder.Services.Configure<RabbitMqOptions>(
+    builder.Configuration.GetSection("RabbitMQ"));
+
+builder.Services.AddScoped<RabbitMqProducer>();
+
+
+builder.Services.AddHostedService<OrderCreatedConsumer>();
+
+//Repository
+// builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+// 注册订单应用服务
+builder.Services.AddScoped<OrderApplicationService>();
+
+
 
 var app = builder.Build();
 
@@ -260,6 +301,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
@@ -267,10 +310,24 @@ app.UseCors("Frontend");
 
 app.UseRateLimiter();
 
-app.UseExceptionHandler();
-
-
 app.UseAuthentication();
+
+// app.Use(async (context, next) =>
+// {
+//     var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+//
+//     await next();
+//
+//     stopwatch.Stop();
+//
+//     Console.WriteLine(
+//         $"[{context.Request.Method}] " +
+//         $"{context.Request.Path} " +
+//         $"StatusCode={context.Response.StatusCode} " +
+//         $"Elapsed={stopwatch.ElapsedMilliseconds}ms");
+// });
+
+app.UseMiddleware<RequestTimingMiddleware>();
 
 app.UseAuthorization();
 

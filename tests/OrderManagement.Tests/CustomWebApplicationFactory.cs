@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using OrderManagement.Api.Data;
 
 namespace OrderManagement.Tests;
@@ -30,6 +31,9 @@ public class CustomWebApplicationFactory
 
         builder.ConfigureTestServices(services =>
         {
+            // Integration tests do not depend on external message brokers.
+            services.RemoveAll<IHostedService>();
+
             // 移除原来的 DbContext 注册
             services.RemoveAll<ApplicationDbContext>();
             services.RemoveAll<DbContextOptions<ApplicationDbContext>>();

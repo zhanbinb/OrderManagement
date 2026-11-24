@@ -184,7 +184,8 @@ public class OrderServiceTests
         var request = new UpdateOrderRequest
         {
             CustomerName = "新客户",
-            TotalAmount = 99m
+            TotalAmount = 99m,
+            Version = existingOrder.Version
         };
 
         // Act

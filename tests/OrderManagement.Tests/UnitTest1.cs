@@ -1,4 +1,5 @@
 ﻿using OrderManagement.Domain.Aggregates;
+using OrderManagement.Domain.Exceptions;
 using OrderManagement.Domain.ValueObjects;
 
 namespace OrderManagement.Tests;
@@ -18,7 +19,7 @@ public class UnitTest1
 
         order.Pay();
 
-        Assert.Throws<InvalidOperationException>(() =>
+        Assert.Throws<BusinessException>(() =>
             order.AddItem(
                 1002,
                 "MacBook",

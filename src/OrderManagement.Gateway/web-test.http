@@ -1,0 +1,63 @@
+### GET request to example server
+GET http://localhost:5001/api/ddd/orders/2
+###
+
+### gateway 获取订单详情
+GET http://localhost:5000/orders/2
+X-Client-Id: 123456
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsInBlcm1pc3Npb24iOlsib3JkZXIucmVhZCIsIm9yZGVyLm1hbmFnZSJdLCJleHAiOjE3OTU1MjQ4NjIsImlzcyI6Ik9yZGVyTWFuYWdlbWVudC5BcGkiLCJhdWQiOiJPcmRlck1hbmFnZW1lbnQuQ2xpZW50In0.LA6VAxBxwdTuF-FX-FLVh67onQeg5xkboRBHYJ4lDP0
+
+
+
+### 添加订单
+POST http://localhost:5000/orders
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 1001,
+      "productName": "机械键盘",
+      "unitPrice": 299.00,
+      "currency": "CNY",
+      "quantity": 2
+    },
+    {
+      "productId": 1002,
+      "productName": "鼠标",
+      "unitPrice": 99.00,
+      "currency": "CNY",
+      "quantity": 1
+    }
+  ]
+}
+###
+
+
+### 获取 jwt token
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+###
+
+
+
+
+### jwt token 认证
+GET http://localhost:5000/secure
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsInBlcm1pc3Npb24iOlsib3JkZXIucmVhZCIsIm9yZGVyLm1hbmFnZSJdLCJleHAiOjE3OTU1MTI0MzksImlzcyI6Ik9yZGVyTWFuYWdlbWVudC5BcGkiLCJhdWQiOiJPcmRlck1hbmFnZW1lbnQuQ2xpZW50In0.S7xgV2rGXu3qNFIyDgTIlyJXEuUJFjuP3CNR8_9zMO4
+###
+
+
+
+# curl -i 
+#  -H "X-Client-Id: client-a" 
+#  http://localhost:5000/orders/2
+GET http://localhost:5000/orders/2
+X-Client-Id: client-a
+
+###

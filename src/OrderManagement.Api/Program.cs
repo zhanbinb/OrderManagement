@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Threading.RateLimiting;
+using Consul;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -279,7 +280,17 @@ builder.Services.AddHostedService<OrderCreatedConsumer>();
 // 注册订单应用服务
 builder.Services.AddScoped<OrderApplicationService>();
 
+builder.Services.AddHealthChecks();
 
+var consulAddress = builder.Configuration["Consul:Address"]!;
+
+builder.Services.AddSingleton<IConsulClient>(_ =>
+    new ConsulClient(config =>
+    {
+        config.Address = new Uri(consulAddress);
+    }));
+
+builder.Services.AddHostedService<ConsulRegistrationService>();
 
 var app = builder.Build();
 
@@ -342,6 +353,8 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = check => check.Tags.Contains("ready")
 });
+
+app.MapHealthChecks("/health");
 
 app.Run();
 
